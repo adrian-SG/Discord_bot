@@ -1,4 +1,30 @@
-import utils as u
+import json
+from anima import utils as u
+
+KEY_H_SECUNDARIAS = ['acrobacias', 'atletismo', 'montar', 'nadar', 'trepar', 'saltar', 'pilotar', 'estilo', 'intimidar',
+                     'liderazgo',
+                     'persuasion', 'comercio', 'callejeo', 'etiqueta', 'advertir', 'buscar', 'rastrear', 'animales',
+                     'ciencia', 'ley',
+                     'herbolaria', 'historia', 'tactica', 'medicina', 'memorizar', 'navegacion', 'ocultismo',
+                     'tasacion',
+                     'valoracion_magica', 'frialdad', 'peoezas_fuerza', 'resistir_dolor', 'cerrajeria', 'disfraz',
+                     'ocultarse', 'robo',
+                     'sigilo', 'tramperia', 'venenos', 'arte', 'baile', 'forja', 'runas', 'alquimia', 'animismo',
+                     'musica',
+                     'trucos_manos', 'caligrafia', 'ritual', 'orfebreria', 'confeccion', 'confeccion_marionetas']
+
+KEY_H_PSIQUICAS = ['potencial_psiquico', 'proyeccion_psiquica', 'disciplinas_psiquicas', 'poderes_psiquicos',
+                   'patrones_mentales', 'cv_libres', 'cv_innatos']
+
+KEY_H_SOBRENATURALES = ['proyeccion_magica_ofensiva', 'proyeccion_magica_defensiva', 'dominar', 'atar', 'desconvocar',
+                        'convocar', 'zeon', 'regeneracion_zeon', 'act', 'nivel_magia']
+
+KEY_H_COMBATE = ['turno', 'h_ataque', 'h_defensa', 'dano']
+
+KEY_RESISTENCIAS = ['fisica', 'magica', 'psiquica', 'veneno', 'enfermedad']
+
+KEY_ATRIBUTOS = ['fuerza', 'destreza', 'agilidad', 'constitucion', 'poder', 'inteligencia', 'voluntad',
+                 'percepcion']
 
 """
     Pendientes:
@@ -12,8 +38,9 @@ import utils as u
     -   Especial
     -   Artefactos
 """
-class Personaje:
 
+
+class Personaje:
     nombre: str
     nivel: int
     clase: str
@@ -32,7 +59,7 @@ class Personaje:
     '''Varios'''
     habilidades_naturales: str
     ventajas: str
-    desventajas: str
+    # desventajas: str
     lore: str
 
     '''Inventario'''
@@ -61,114 +88,171 @@ class Personaje:
         'enfermedad': None
     }
 
-
     '''HABILIDADES'''
-    turno: dict[u.Combate]
-    # HAB. COMBATE
-    h_ataque: dict[u.Combate]
-    h_defensa: dict[u.Combate]
-    dano: dict[u.Combate]
+    h_combate: dict = {
+        'turno': None,
+        # HAB. COMBATE
+        'h_ataque': None,
+        'h_defensa': None,
+        'dano': None
         # parada: u.Combate
         # esquiva: u.Combate
-    # pasivas
-    llevar_armadura: u.Habilidad
-    # tablas
-    # artes_marciales
-    # tablas_armas
+        # pasivas
+        # 'llevar_armadura': None
+        # tablasl
+        # artes_marciales
+        # tablas_armas
+    }
+
+    # Ki
+    ki: dict = {}
 
     # HAB. SOBRENATURALES
-    proyeccion_magica: dict[u.Activa]
-    proyeccion_magica_defensiva: u.Activa
-    convocar: u.Activa
-    dominar: u.Activa
-    atar: u.Activa
-    desconvocar: u.Activa
-    # pasivas
-    zeon: u.Atributo
-    regeneracion_zeon = u.Atributo
-    act: u.Atributo
-    nivel_magia: str
-
-    # tablas
-    # tablas_proyeccion_magica: Tabla_Anima
+    h_sobrenaturales: dict = {
+        'proyeccion_magica_ofensiva': None,
+        'proyeccion_magica_defensiva': None,
+        'dominar': None,
+        'atar': None,
+        'desconvocar': None,
+        'convocar': None,
+        # pasivas
+        'zeon': None,
+        'regeneracion_zeon': None,
+        'act': None,
+        'nivel_magia': None
+        # tablas
+        # tablas_proyeccion_magica: Tabla_Anima
+    }
 
     # HAB. PSIQUICAS
-    proyeccion_psiquica: u.Activa
-    # pasivas
-    cv: u.Atributo
-    # tablas
-    # tablas_proyeccion_psiquica: Tabla_Anima
+    h_psiquicas = {
+        # Habilidad
+        'potencial_psiquico': None,
+        'proyeccion_psiquica': None,
+        # pasivas
+        'disciplinas_psiquicas': None,
+        'poderes_psiquicos': None,
+        'patrones_mentales': None,
+        'cv_libres': None,
+        'cv_innatos': None
 
+        # tablas
+        # tablas_proyeccion_psiquica: Tabla_Anima
+    }
     # HAB. SECUNDARIAS
     #  atleticas
-    acrobacias: u.Activa
-    atletismo: u.Activa
-    montar: u.Activa
-    nadar: u.Activa
-    trepar: u.Activa
-    saltar: u.Activa
-    pilotar: u.Activa
-    #  sociales
-    estilo: u.Activa
-    intimidar: u.Activa
-    liderazgo: u.Activa
-    persuasion: u.Activa
-    comercio: u.Activa
-    callejeo: u.Activa
-    etiqueta: u.Activa
-    #  perceptivas
-    advertir: u.Activa
-    buscar: u.Activa
-    rastrear: u.Activa
-    #  intelectuales
-    animales: u.Activa
-    ciencia: u.Activa
-    ley: u.Activa
-    herbolaria: u.Activa
-    historia: u.Activa
-    tactica: u.Activa
-    medicina: u.Activa
-    memorizar: u.Activa
-    navegacion: u.Activa
-    ocultismo: u.Activa
-    tasacion: u.Activa
-    valoracion_magica: u.Activa
-    #  vigor
-    frialdad: u.Activa
-    peoezas_fuerza: u.Activa
-    resistir_dolor: u.Activa
-    #  subterfugio
-    cerrajeria: u.Activa
-    disfraz: u.Activa
-    ocultarse: u.Activa
-    robo: u.Activa
-    sigilo: u.Activa
-    tramperia: u.Activa
-    venenos: u.Activa
-    #  creativas
-    arte: u.Activa
-    baile: u.Activa
-    forja: u.Activa
-    runas: u.Activa
-    alquimia: u.Activa
-    animismo: u.Activa
-    musica: u.Activa
-    trucos_manos: u.Activa
-    caligrafia: u.Activa
-    ritual: u.Activa
-    orfebreria: u.Activa
-    confeccion: u.Activa
-    confeccion_marionetas: u.Activa
+    h_secundarias: dict[u.Activa] = {
 
+        'acrobacias': None,
+        'atletismo': None,
+        'montar': None,
+        'nadar': None,
+        'trepar': None,
+        'saltar': None,
+        'pilotar': None,
+        #  sociales
+        'estilo': None,
+        'intimidar': None,
+        'liderazgo': None,
+        'persuasion': None,
+        'comercio': None,
+        'callejeo': None,
+        'etiqueta': None,
+        #  perceptivas
+        'advertir': None,
+        'buscar': None,
+        'rastrear': None,
+        #  intelectuales
+        'animales': None,
+        'ciencia': None,
+        'ley': None,
+        'herbolaria': None,
+        'historia': None,
+        'tactica': None,
+        'medicina': None,
+        'memorizar': None,
+        'navegacion': None,
+        'ocultismo': None,
+        'tasacion': None,
+        'valoracion_magica': None,
+        #  vigor
+        'frialdad': None,
+        'peoezas_fuerza': None,
+        'resistir_dolor': None,
+        #  subterfugio
+        'cerrajeria': None,
+        'disfraz': None,
+        'ocultarse': None,
+        'robo': None,
+        'sigilo': None,
+        'tramperia': None,
+        'venenos': None,
+        #  creativas
+        'arte': None,
+        'baile': None,
+        'forja': None,
+        'runas': None,
+        'alquimia': None,
+        'animismo': None,
+        'musica': None,
+        'trucos_manos': None,
+        'caligrafia': None,
+        'ritual': None,
+        'orfebreria': None,
+        'confeccion': None,
+        'confeccion_marionetas': None
+    }
+
+    def control_turno(self):
+        pass
+
+    def control_h_ataque(self):
+        pass
+
+    def control_h_defensa(self):
+        pass
+
+    # def control_sobrenaturales(self):
+    #     pass
 
     def control(self, nom_hab, mod=0, objeto=None):
         # checkear tipo? Habilidad, Activa, Combate?
-        hab_attr = self.__getattribute__(nom_hab)
+        nom_hab = str(nom_hab).lower()
+        objeto = str(objeto).lower()
+        attr_na = "no_existe_el_atributo"
+
+        # claves_generales
+
+        tar_dict = None
+        if nom_hab in KEY_ATRIBUTOS:
+            tar_dict = self.atributos
+        if nom_hab in KEY_RESISTENCIAS:
+            tar_dict = self.resistencias
+        if nom_hab in KEY_H_COMBATE:
+            tar_dict = self.h_combate
+        # clave_ki
+        if nom_hab in KEY_H_SOBRENATURALES:
+            tar_dict = self.h_sobrenaturales
+        if nom_hab in KEY_H_PSIQUICAS:
+            tar_dict = self.h_psiquicas
+        if nom_hab in KEY_H_SECUNDARIAS:
+            tar_dict = self.h_secundarias
+
+        if tar_dict is None:
+            hab_attr = getattr(self, nom_hab, attr_na)
+        else:
+            hab_attr = tar_dict.get(nom_hab)
+
+#       AUTO-BUSQUEDA por los dicts?
+        # if hab_attr == attr_na:
+        #     self.
 
         if isinstance(hab_attr, u.Combate):
             return hab_attr.control(objeto, mod)
-        elif isinstance(hab_attr, u.Activa):
+        elif isinstance(hab_attr, u.Habilidad):
             return hab_attr.control(mod)
         else:
             return None
 
+    def __repr__(self):
+        return json.dumps(self, default=lambda o: o.__dict__, indent=4, ensure_ascii=False).encode('utf8').decode()

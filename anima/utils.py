@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 
 from dado import Dado
@@ -9,6 +10,9 @@ class Caracteristica:
     def __init__(self, base):
         self.base = base
 
+    def __str__(self):
+        return f"base: {self.base}"
+
 
 class Activa(Caracteristica):
     dado: Dado
@@ -17,14 +21,24 @@ class Activa(Caracteristica):
         super().__init__(base)
         self.dado = dado
 
-    def control(self, modif=0):
-        return self.dado.roll() + self.base + modif
+    def control(self, modif=0) -> dict:
+        roll_result = self.dado.roll()
+        control = {
+            'desc': f'({roll_result}) + {int(self.base)} + [{modif}]',
+            'result': roll_result + int(self.base) + modif,
+            'pifia': True if roll_result <= self.dado.nivel_pifia else False,
+            'abierta': True if roll_result >= self.dado.nivel_abierta else False
+        }
+        return control
 
 
 class Habilidad(Activa):
 
     def __init__(self, base):
-        super().__init__(base, Dado(100))
+        dado = Dado(100)
+        dado.nivel_pifia = 3
+        dado.nivel_abierta = 90
+        super().__init__(base, dado)
 
 
 class Combate(Habilidad):
@@ -34,19 +48,34 @@ class Combate(Habilidad):
         self.base_por_obj: defaultdict = defaultdict(lambda: self.base)
 
     def control(self, objeto: str, modif=0):
-        return self.dado.roll() + self.base_por_obj.get(objeto) + modif
+        roll_result = self.dado.roll()
+        control = {
+            'desc': f'({roll_result}) + {int(self.base_por_obj.get(objeto))} + [{modif}]',
+            'result': roll_result + int(self.base_por_obj.get(objeto)) + modif,
+            'pifia': True if roll_result <= self.dado.nivel_pifia else False,
+            'abierta': True if roll_result >= self.dado.nivel_abierta else False
+        }
+        return control
+
+    def __str__(self):
+        return json.dumps(self.base_por_obj, default=lambda o: o.__dict__,
+                          indent=4, ensure_ascii=False).encode('utf8').decode()
 
 
 class Resistencia(Activa):
 
     def __init__(self, base):
-        super().__init__(base, Dado(100))
+        dado = Dado(100)
+        super().__init__(base, dado)
 
 
 class Atributo(Activa):
 
     def __init__(self, base):
-        super().__init__(base, Dado(10))
+        dado = Dado(10)
+        dado.nivel_pifia = 1
+        dado.nivel_abierta = 10
+        super().__init__(base, dado)
 
 
 class Grado:
